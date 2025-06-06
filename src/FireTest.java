@@ -20,4 +20,5 @@ public class FireTest {
 
         assertEquals(expected, actual);
     }
+
 }

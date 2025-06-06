@@ -1,3 +1,4 @@
+import java.util.*;
 public class Fire {
     /**
      * Returns how long it takes for all vulnerable trees to be set on fire if a
@@ -38,6 +39,52 @@ public class Fire {
     public static int timeToBurn(char[][] forest, int matchR, int matchC) {
         // HINT: when adding to your BFS queue, you can include more information than
         // just a location. What other information might be useful?
-        return -1;
+        boolean[][] visited = new boolean[forest.length][forest[0].length];
+        return timeToBurn(forest, matchR, matchC, 0, visited);
     }
+
+
+    public static int timeToBurn(char[][] forest, int r, int c, int time, boolean[][] visited){
+        
+        Queue<int[]> trees = new LinkedList<>();
+        trees.add(new int[] {r, c, });
+
+        while(!trees.isEmpty()){
+            int[] current = trees.poll();
+            if(visited[current[0]][current[1]]) continue;
+            visited[current[0]][current[1]] = true;
+
+            trees.addAll(setFire(forest, r, c, visited));
+        }
+        return time;
+    }
+
+    private static int[][] directions = {
+        {1,0},
+        {-1,0},
+        {0,1},
+        {0,-1}
+    };
+
+    public static Set<int[]> setFire(char[][] forest, int r, int c, boolean[][] visited){
+        Set<int[]> burning = new HashSet<>();
+        
+        for(int[] dir: directions){
+
+            int[] point = {r+dir[0], c+dir[1]};
+            if(visited[point[0]][point[1]]){
+                continue;
+            }
+            if((r+<0 || c<0 || r>= forest.length || c>= forest[0].length)){
+                continue;
+            }
+            if(forest[r+dir[0]][dir[1]] == 't'){//we need to check bounds here ish
+                burning.add(point);
+            }
+        }
+        return burning;
+    }
+
+
+
 }
