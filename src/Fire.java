@@ -47,16 +47,33 @@ public class Fire {
     public static int timeToBurn(char[][] forest, int r, int c, int time, boolean[][] visited){
         
         Queue<int[]> trees = new LinkedList<>();
-        trees.add(new int[] {r, c, });
+        trees.add(new int[] {r, c, time});
+        visited[r][c] = true;
+        int maxTime = 0;
 
         while(!trees.isEmpty()){
             int[] current = trees.poll();
-            if(visited[current[0]][current[1]]) continue;
-            visited[current[0]][current[1]] = true;
+            System.out.println(current[2]);
+            int currentTime = current[2];
+        
+            maxTime = currentTime;
+         for(int[] dir: directions){
 
-            trees.addAll(setFire(forest, r, c, visited));
+            int[] point = {current[0]+dir[0], current[1] +dir[1], currentTime +1};
+            
+             if(point[0] >= 0 && point[0]<forest.length && 
+             point[1] >=0 && point[1] <forest[0].length && 
+             !visited[point[0]][point[1]] && 
+             forest[point[0]][point[1]] == 't'){
+
+                visited[point[0]][point[1]] = true;
+                trees.add(point);
+             }
+            
         }
-        return time;
+    }
+
+        return maxTime ;
     }
 
     private static int[][] directions = {
@@ -65,26 +82,6 @@ public class Fire {
         {0,1},
         {0,-1}
     };
-
-    public static Set<int[]> setFire(char[][] forest, int r, int c, boolean[][] visited){
-        Set<int[]> burning = new HashSet<>();
-        
-        for(int[] dir: directions){
-
-            int[] point = {r+dir[0], c+dir[1]};
-            if(visited[point[0]][point[1]]){
-                continue;
-            }
-            if((r+<0 || c<0 || r>= forest.length || c>= forest[0].length)){
-                continue;
-            }
-            if(forest[r+dir[0]][dir[1]] == 't'){//we need to check bounds here ish
-                burning.add(point);
-            }
-        }
-        return burning;
-    }
-
 
 
 }
